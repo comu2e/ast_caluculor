@@ -76,7 +76,7 @@ fn tokenize(input: &str) -> Vec<Token> {
 }
 
 struct Parser {
-    tokens: Vec<Token>,  // tokesn → tokens
+    tokens: Vec<Token>,
     pos: usize,
 }
 
@@ -93,7 +93,7 @@ impl Parser {
         self.pos += 1;
     }
 
-    fn parse_expr(&mut self) -> Expr {  // parser_expre → parse_expr
+    fn parse_expr(&mut self) -> Expr {
         let mut left = self.parse_term();
 
         while let Some(token) = self.current() {
@@ -104,19 +104,19 @@ impl Parser {
             };
             self.advance();
             let right = self.parse_term();
-            left = Expr::BinaryOp {  // let = → left =
+            left = Expr::BinaryOp {
                 op,
                 left: Box::new(left),
                 right: Box::new(right),
             };
         }
-        left  // 戻り値を追加
+        left
     }
 
     fn parse_term(&mut self) -> Expr {
         let mut left = self.parse_factor();
 
-        while let Some(token) = self.current() {  // while left Some → while let Some
+        while let Some(token) = self.current() {
             let op = match token {
                 Token::Star => Op::Mul,
                 Token::Slash => Op::Div,
@@ -142,7 +142,7 @@ impl Parser {
             }
             Some(Token::LParen) => {
                 self.advance();
-                let expr = self.parse_expr();  // left expr → let expr
+                let expr = self.parse_expr();
                 self.advance();
                 expr
             }
@@ -152,14 +152,13 @@ impl Parser {
 }
 
 fn main() {
-    let input = "2 + 3 * 4";
+    let input
     let tokens = tokenize(input);
     println!("Tokens: {:?}", tokens);
 
-    let mut parser = Parser::new(tokens);  // praser → parser
-    let ast = parser.parse_expr();         // parser_expre → parse_expr
-    println!("AST: {:?}", ast);            // フォーマット修正
+    let mut parser = Parser::new(tokens);  
+    let ast = parser.parse_expr();         
+    println!("AST: {:?}", ast);            
 
     let result = eval(&ast);
-    println!("{} = {}", input, result);    // セミコロン追加
-}
+    println!("{} = {}", input, result);    }
